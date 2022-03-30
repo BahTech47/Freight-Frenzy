@@ -6,18 +6,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-//import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-//import org.firstinspires.ftc.teamcode.ShippingElementDetector;
-//import org.openftc.easyopencv.OpenCvCamera;
-//import org.openftc.easyopencv.OpenCvCameraFactory;
-//import org.openftc.easyopencv.OpenCvCameraRotation;
-//import org.openftc.easyopencv.OpenCvWebcam;
+import org.firstinspires.ftc.teamcode.ShippingElementDetector;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 
 @Autonomous(name = "IntermediateAuto")
@@ -44,131 +43,121 @@ public class FFAuto extends LinearOpMode {
     final BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
     //Utility variables to define start position and side of the field
-//    boolean blueSide = gamepad1.x;
-//    boolean redSide = gamepad1.b;
-//    boolean pos1 = gamepad1.y;
-//
-//
-//    Hardware variables
-//    OpenCvWebcam webcam;
+    boolean blueSide = gamepad1.x;
+    boolean redSide = gamepad1.b;
+    boolean pos1 = gamepad1.y;
+
+    OpenCvWebcam webcam;
 
     DcMotor leftMotor;
     DcMotor rightMotor;
 
-//    ColorSensor colorSensor;
-//
-//    //Timer object
-//    ElapsedTime runtime = new ElapsedTime();
-//
-//    //Recognition constructor class
-//    ShippingElementDetector detector = new ShippingElementDetector(telemetry);
+    ColorSensor colorSensor;
+
+    //Timer object
+    ElapsedTime runtime = new ElapsedTime();
+
+    //Recognition constructor class
+    ShippingElementDetector detector = new ShippingElementDetector(telemetry);
 
     @Override
     public void runOpMode() throws InterruptedException {
-//
-//        //Camera initializing
-//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
-//        webcam.setPipeline(detector);
-//
-//        initIMU();
-//
-//        //Camera config
-//        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-//
-//            @Override
-//            public void onOpened() {
-//                //Camera range and position config
-//                webcam.startStreaming(1280, 960, OpenCvCameraRotation.UPRIGHT);
-//            }
-//            @Override
-//            public void onError(int errorCode) {
-//                // This will be called if the camera could not be opened
-//            }
-//        });
-//
-//        //Motors definition
-//        leftMotor = hardwareMap.get(DcMotor.class, "left_motor");
-//        rightMotor = hardwareMap.get(DcMotor.class, "right_motor");
-//
-//        //Set motors zero power behavior
-//        leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//
-//        telemetry.addData(">", "Press Play to start!");
-//        telemetry.update();
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
+        webcam.setPipeline(detector);
+
         initIMU();
-        rightMotor = hardwareMap.get(DcMotor.class, "right_motor");
+
+        //Camera config
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+
+            @Override
+            public void onOpened() {
+                //Camera range and position config
+                webcam.startStreaming(1280, 960, OpenCvCameraRotation.UPRIGHT);
+            }
+            @Override
+            public void onError(int errorCode) {
+                // This will be called if the camera could not be opened
+            }
+        });
+
+        //Motors definition
         leftMotor = hardwareMap.get(DcMotor.class, "left_motor");
-        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        waitForStart();
-        blueLeftFirstPos();
+        rightMotor = hardwareMap.get(DcMotor.class, "right_motor");
+
+        //Set motors zero power behavior
+        leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        telemetry.addData(">", "Press Play to start!");
+        telemetry.update();
 
         while (opModeIsActive()) {
-//            //get the position of the shipping element
-//            ShippingElementDetector.ShippingElementLocation elementLocation = detector.getShippingElementLocation();
-//            telemetry.addData("element location:", elementLocation);
-//            telemetry.update();
-//
-//            //Blue side calling methods
-//            if(blueSide) {
-//                switch (elementLocation) {
-//                    case LEFT:
-//                        if (pos1) {
-//                            blueLeftFirstPos();
-//                        } else {
-//                            blueLeftSecondPos();
-//                        }
-//                        break;
-//                    case MIDDLE:
-//                        if (pos1) {
-//                            blueMidFirstPos();
-//                        } else {
-//                            blueMidSecondPos();
-//                        }
-//                        break;
-//                    case RIGHT:
-//                        if (pos1) {
-//                            blueRightFirstPos();
-//                        } else {
-//                            blueRightSecondPos();
-//                        }
-//                        break;
-//                    default:
-//                        telemetry.addData("Something went wrong!", "Try it again");
-//                }
-//            }
-//
-//            //Red side calling methods
-//            else if(redSide) {
-//                switch (elementLocation) {
-//                    case LEFT:
-//                        if (pos1) {
-//                            redLeftFirstPos();
-//                        } else {
-//                            redLeftSecondPos();
-//                        }
-//                        break;
-//                    case MIDDLE:
-//                        if (pos1) {
-//                            redMidFirstPos();
-//                        } else {
-//                            redMidSecondPos();
-//                        }
-//                        break;
-//                    case RIGHT:
-//                        if (pos1) {
-//                            redRightFirstPos();
-//                        } else {
-//                            redRightSecondPos();
-//                        }
-//                        break;
-//                    default:
-//                        telemetry.addData("Something went wrong!", "Try it again");
-//                }
-//            }
-//            sleep(150);
-            turn(90, true, 0);
+            //get the position of the shipping element
+            ShippingElementDetector.ShippingElementLocation elementLocation = detector.getShippingElementLocation();
+            telemetry.addData("element location:", elementLocation);
+            telemetry.update();
+
+            //Blue side calling methods
+            if(blueSide) {
+                switch (elementLocation) {
+                    case LEFT:
+                        if (pos1) {
+                            blueLeftFirstPos();
+                        } else {
+                            blueLeftSecondPos();
+                        }
+                        break;
+                    case MIDDLE:
+                        if (pos1) {
+                            blueMidFirstPos();
+                        } else {
+                            blueMidSecondPos();
+                        }
+                        break;
+                    case RIGHT:
+                        if (pos1) {
+                            blueRightFirstPos();
+                        } else {
+                            blueRightSecondPos();
+                        }
+                        break;
+                    default:
+                        telemetry.addData("Something went wrong!", "Try it again");
+                }
+            }
+
+            //Red side calling methods
+            else if(redSide) {
+                switch (elementLocation) {
+                    case LEFT:
+                        if (pos1) {
+                            redLeftFirstPos();
+                        } else {
+                            redLeftSecondPos();
+                        }
+                        break;
+                    case MIDDLE:
+                        if (pos1) {
+                            redMidFirstPos();
+                        } else {
+                            redMidSecondPos();
+                        }
+                        break;
+                    case RIGHT:
+                        if (pos1) {
+                            redRightFirstPos();
+                        } else {
+                            redRightSecondPos();
+                        }
+                        break;
+                    default:
+                        telemetry.addData("Something went wrong!", "Try it again");
+                }
+            }
+            sleep(150);
         }
     }
 
