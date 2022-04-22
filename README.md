@@ -3,8 +3,4 @@
 With this documentation we'll show to the FTC programming community how we thought our code and how we actually programmed it, explaining our main methods and classes.
 
 
-<p align="left">
-▶️ Check the complete code 
-<a href="google.com.br" target="_blank">here </a>	
-</p>
-
+➡️ You can check our code clicking [here](https://github.com/BahTech47/Freight-Frenzy/tree/main/TeamCode/src/main/java/org/firstinspires/ftc/teamcode)	
