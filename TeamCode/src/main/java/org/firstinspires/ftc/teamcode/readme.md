@@ -2,16 +2,24 @@
 
 💥 Let's dive into the code 
 
-<p align="right">
- <a href="#"> 🇧🇷 Check the portuguese version </a>
- </p>
+Check the portuguese version [here](*)
 
-## Organization
+# Our folders
 
-a lot of text here
+## 📁Teamcode
 
-📁FFAuto
-<br/>
-📁FFAuto
+### 🗒️FFTele
 
-##
+### 🗒️FFTeleMove
+
+### 🗒️FFAuto
+
+### 🗒️FFAutoMove
+
+### 📁Tests
+
+#### 🗒️Movement
+
+#### 🗒️Webcam
+
+#### 🗒️General
