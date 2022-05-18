@@ -4,22 +4,4 @@
 
 Check the portuguese version [here](*)
 
-# Our folders
 
-## 📁Teamcode
-
-### 🗒️FFTele
-
-### 🗒️FFTeleMove
-
-### 🗒️FFAuto
-
-### 🗒️FFAutoMove
-
-### 📁Tests
-
-#### 🗒️Movement
-
-#### 🗒️Webcam
-
-#### 🗒️General
